@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="KantaLiitos.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="5" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="KantaLiitos">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=armago;AccountKey=$(_armago.key_)" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="4c9d91c9-0c54-463a-8f11-47c7baa0f8f0" />
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>
