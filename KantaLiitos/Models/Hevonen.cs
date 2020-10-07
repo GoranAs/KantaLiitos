@@ -21,7 +21,7 @@ namespace KantaLiitos.Models
             "Server = tcp:hkhkanta.database.windows.net,1433;" +
             "Initial Catalog = hkhkanta; Persist Security Info=False;" +
             "User ID = halpa; Password={+Barajagsjalv-};" +
-            "MultipleActiveResultSets=False;Encrypt=False;" +
+            "MultipleActiveResultSets=False;Encrypt=True;" +
             "TrustServerCertificate=False;Connection Timeout = 30;";
     }
 
