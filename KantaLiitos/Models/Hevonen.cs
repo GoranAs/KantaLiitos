@@ -8,6 +8,7 @@ namespace KantaLiitos.Models
 {
     public static class DbCon
     {
+        /*
         public static string connectionString = "Data Source = (local);" +
             "user id = HkhLogin;" +
             "password = Hkh_Salasana1;" +
@@ -15,7 +16,15 @@ namespace KantaLiitos.Models
             //               "Trusted_Connection = True;" +
             //             "Integrated Security = True;" +
             "Asynchronous Processing = True;";
+        */
+        public static string connectionString =
+            "Server = tcp:hkhkanta.database.windows.net,1433;" +
+            "Initial Catalog = hkhkanta; Persist Security Info=False;" +
+            "User ID = halpa; Password={+Barajagsjalv-};" +
+            "MultipleActiveResultSets=False;Encrypt=False;" +
+            "TrustServerCertificate=False;Connection Timeout = 30;";
     }
+
     [Serializable]
     public class Hevonen
     {
