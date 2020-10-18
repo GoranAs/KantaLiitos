@@ -29,9 +29,10 @@ namespace KantaLiitos.Controllers
             String commandText = "dbo.SelectKuva";
             int k = 1;
 
-            SqlParameter parameterCus = new SqlParameter("@Cus", SqlDbType.VarChar)
+            SqlParameter par1 = new SqlParameter("@Nimi", id);
+            SqlParameter[] pars = new SqlParameter[]
             {
-                Value = id
+                        par1
             };
             // When the direction of parameter is set as Output, you can get the value after 
             // executing the command.
@@ -40,7 +41,7 @@ namespace KantaLiitos.Controllers
             using (SqlCommand cmd = new SqlCommand(commandText, conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(parameterCus);
+                cmd.Parameters.AddRange(pars);
 
                 conn.Open();
                 // When using CommandBehavior.CloseConnection, the connection will be closed when the 
@@ -52,36 +53,18 @@ namespace KantaLiitos.Controllers
                     {
                         Kuva tieto = new Kuva();
                         tieto.Id = (int)reader["Id"];
-                        tieto.Cus = (string)reader["Cus"];
                         tieto.Aika = (DateTime)reader["Aika"];
-                        tieto.HevosId = (int)reader["HevosId"];
-                        tieto.Tunnus = (string)reader["Tunnus"];
                         tieto.Nimi = (string)reader["Nimi"];
-                        tieto.Laakari = (string)reader["Laakari"];
-                        tieto.Sairaala = (string)reader["Sairaala"];
                         tieto.Data = (byte[])reader["Data"];
-                        tieto.Kustannus = (double)reader["Kustannus"];
-                        tieto.Selvennys = (string)reader["Selvennys"];
-                        tieto.Tyyppi = (int)reader["Tyyppi"];
-                        tieto.Tiedosto = (string)reader["Tiedosto"];
                         res[k++] = tieto;
                         if (k == 500)
                             break;
                     }
                     Kuva pituus = new Kuva();
                     pituus.Id = k - 1;
-                    pituus.Cus = "";
                     pituus.Aika = DateTime.MinValue;
-                    pituus.HevosId = 0;
-                    pituus.Tunnus = "";
                     pituus.Nimi = "";
-                    pituus.Laakari = "";
-                    pituus.Sairaala = "";
                     pituus.Data = null;
-                    pituus.Kustannus = 0;
-                    pituus.Selvennys = "";
-                    pituus.Tyyppi = 0;
-                    pituus.Tiedosto = "";
                     res[0] = pituus;
                 }
                 else
@@ -102,25 +85,14 @@ namespace KantaLiitos.Controllers
             String commandText;
             commandText = "dbo.InsertKuva";
 
-            SqlParameter par1 = new SqlParameter("@Cus", tieto.Cus);
-            SqlParameter par2 = new SqlParameter("@Aika", tieto.Aika);
-            SqlParameter par3 = new SqlParameter("@HevosId", tieto.HevosId);
-            SqlParameter par4 = new SqlParameter("@Tunnus", tieto.Tunnus);
-            SqlParameter par5 = new SqlParameter("@Nimi", tieto.Nimi);
-            SqlParameter par6 = new SqlParameter("@Laakari", tieto.Laakari);
-            SqlParameter par7 = new SqlParameter("@Sairaala", tieto.Sairaala);
-            SqlParameter par8 = new SqlParameter("@Data", tieto.Data);
-            SqlParameter par9 = new SqlParameter("@Kustannus", tieto.Kustannus);
-            SqlParameter par10 = new SqlParameter("@Selvennys", tieto.Selvennys);
-            SqlParameter par11 = new SqlParameter("@Tyyppi", tieto.Tyyppi);
-            SqlParameter par12 = new SqlParameter("@Tiedosto", tieto.Tiedosto);
+            SqlParameter par1 = new SqlParameter("@Aika", tieto.Aika);
+            SqlParameter par2 = new SqlParameter("@Nimi", tieto.Nimi);
+            SqlParameter par3 = new SqlParameter("@Data", tieto.Data);
             SqlParameter[] pars = new SqlParameter[]
             {
-                par1, par2, par3, par4, par5, par6, par7, par8, par9, par10, par11, par12
+                par1, par2, par3
             };
 
-            return "Tähän asti ok";
-            /*
             using (SqlConnection conn = new SqlConnection(DbCon.connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(commandText, conn))
@@ -141,7 +113,6 @@ namespace KantaLiitos.Controllers
                     }
                 }
             }
-            */
         }
 
         // PUT: api/Kuva/5
@@ -151,21 +122,12 @@ namespace KantaLiitos.Controllers
             String commandText;
             commandText = "dbo.UpdateKuva";
 
-            SqlParameter par1 = new SqlParameter("@Cus", tieto.Cus);
-            SqlParameter par2 = new SqlParameter("@Aika", tieto.Aika);
-            SqlParameter par3 = new SqlParameter("@HevosId", tieto.HevosId);
-            SqlParameter par4 = new SqlParameter("@Tunnus", tieto.Tunnus);
-            SqlParameter par5 = new SqlParameter("@Nimi", tieto.Nimi);
-            SqlParameter par6 = new SqlParameter("@Laakari", tieto.Laakari);
-            SqlParameter par7 = new SqlParameter("@Sairaala", tieto.Sairaala);
-            SqlParameter par8 = new SqlParameter("@Data", tieto.Data);
-            SqlParameter par9 = new SqlParameter("@Kustannus", tieto.Kustannus);
-            SqlParameter par10 = new SqlParameter("@Selvennys", tieto.Selvennys);
-            SqlParameter par11 = new SqlParameter("@Tyyppi", tieto.Tyyppi);
-            SqlParameter par12 = new SqlParameter("@Tiedosto", tieto.Tiedosto);
+            SqlParameter par1 = new SqlParameter("@Aika", tieto.Aika);
+            SqlParameter par2 = new SqlParameter("@Nimi", tieto.Nimi);
+            SqlParameter par3 = new SqlParameter("@Data", tieto.Data);
             SqlParameter[] pars = new SqlParameter[]
             {
-                par1, par2, par3, par4, par5, par6, par7, par8, par9, par10, par11, par12
+                par1, par2, par3
             };
 
             using (SqlConnection conn = new SqlConnection(DbCon.connectionString))
@@ -202,15 +164,11 @@ namespace KantaLiitos.Controllers
                 commandText = "dbo.Delete1Kuva";
             else
                 commandText = "dbo.DeleteKuva";
-            if (osat[3].IndexOf('#') != -1)
-                osat[3].Replace('#', '-');
 
-            SqlParameter par1 = new SqlParameter("@Cus", osat[1]);
-            SqlParameter par2 = new SqlParameter("@HevosId", osat[2]);
-            SqlParameter par3 = new SqlParameter("@Tiedosto", osat[3]);
+            SqlParameter par1 = new SqlParameter("@Nimi", osat[1]);
             SqlParameter[] pars = new SqlParameter[]
             {
-                par1, par2, par3
+                par1
             };
 
             using (SqlConnection conn = new SqlConnection(DbCon.connectionString))
@@ -225,7 +183,7 @@ namespace KantaLiitos.Controllers
                     {
                         conn.Open();
                         int stat = cmd.ExecuteNonQuery();
-                        return "Poistettu " + /*stat.ToString()*/ osat[1] + " " + osat[2] + " " + osat[3] + " rivi";
+                        return "Poistettu " + stat.ToString() + " rivi";
                     }
                     catch (Exception exception)
                     {

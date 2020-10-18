@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.IO.Compression;
 using KantaLiitos.Models;
+using System.Data.SqlClient;
 
 namespace KantaLiitos.Controllers
 {
